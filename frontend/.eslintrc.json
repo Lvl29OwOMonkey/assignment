@@ -1,6 +1,16 @@
 {
-  "extends": "next/core-web-vitals",
-  "rules": {
-    // ...
-  }
+	"extends": ["next/core-web-vitals", "eslint:recommended"],
+	"rules": {
+		"camelcase": "warn",
+		"capitalized-comments": "warn",
+		"no-console": "error",
+		"no-var": "error",
+    "no-unreachable": "error",
+		"quotes": ["error", "double"],
+		"jsx-quotes": ["error", "prefer-double"],
+		"prefer-const": "warn",
+		"spaced-comment": "warn",
+		"semi": ["error", "always"],
+		"yoda": "error"
+	}
 }

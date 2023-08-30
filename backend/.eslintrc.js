@@ -21,5 +21,16 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    "camelcase": "warn",
+    "capitalized-comments": "warn",
+    "no-console": "error",
+    "no-var": "error",
+    "no-unreachable": "error",
+    "quotes": ["error", "double"],
+    "jsx-quotes": ["error", "prefer-double"],
+    "prefer-const": "warn",
+    "spaced-comment": "warn",
+    "semi": ["error", "always"],
+    "yoda": "error"
   },
 };
