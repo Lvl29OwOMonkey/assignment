@@ -1,0 +1,15 @@
+name: Lint
+on: [pull_request]
+jobs: 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Lint - Frontend
+        # Run npm run lint in the frontend directory
+        run: npm run lint --prefix frontend
+      - name: Lint - Backend
+        # Run npm run lint in the backend directory
+        run: npm run lint --prefix backend
