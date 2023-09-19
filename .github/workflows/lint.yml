@@ -1,12 +1,12 @@
 name: Lint
 on: [pull_request]
 jobs: 
-  build:
+  eslint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: npm install
+        run: npm install --prefix frontend && npm install --prefix backend
       - name: Lint - Frontend
         # Run npm run lint in the frontend directory
         run: npm run lint --prefix frontend
