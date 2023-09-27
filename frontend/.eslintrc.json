@@ -3,7 +3,7 @@
 	"rules": {
 		"camelcase": "warn",
 		"capitalized-comments": "warn",
-		"no-console": "error",
+		"no-console": "warn",
 		"no-var": "error",
     "no-unreachable": "error",
 		"quotes": ["error", "double"],

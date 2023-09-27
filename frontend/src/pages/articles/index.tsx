@@ -37,7 +37,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<ArticlesProps> = async (_) => {
+export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
   // Map the data to ensure all articles have consistent property names
   const articles = data.articles.map((article) => ({
     id: article.id ?? article._id,

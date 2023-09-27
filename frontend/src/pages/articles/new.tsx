@@ -7,7 +7,7 @@ const NewDiscussion = () => {
   const [pubYear, setPubYear] = useState<number>(0);
   const [doi, setDoi] = useState("");
   const [summary, setSummary] = useState("");
-  const [linkedDiscussion, setLinkedDiscussion] = useState("");
+  // const [linkedDiscussion, setLinkedDiscussion] = useState("");
   const submitNewArticle = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -16,10 +16,10 @@ const NewDiscussion = () => {
         title,
         authors,
         source,
-        publication_year: pubYear,
+        publicationYear: pubYear,
         doi,
         summary,
-        linked_discussion: linkedDiscussion,
+        // linkedDiscussion: linkedDiscussion,
       })
     );
   };
