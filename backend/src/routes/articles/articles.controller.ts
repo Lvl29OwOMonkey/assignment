@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ArticlesService } from "./articles.service";
-import { Article } from "src/interfaces/articles.interface";
+import { Article } from "../../interfaces/articles.interface";
 
 @Controller("articles")
 export class ArticlesController {
