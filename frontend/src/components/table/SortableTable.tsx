@@ -18,7 +18,7 @@ const SortableTable: React.FC<SortableTableProps> = ({ headers, data }) => (
       {data.map((row, i) => (
         <tr key={i}>
           {headers.map((header) => (
-            <td key={header.key}>{row[header.key]}</td>
+            <td key={header.key}>{header.key == "authors" ? row[header.key].join(", ") : row[header.key]}</td>
           ))}
         </tr>
       ))}
