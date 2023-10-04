@@ -16,7 +16,7 @@ export default function SubmissionForm() {
         <input {...register("source")} placeholder="Source" />
       </p>
       <p>
-        <input {...register("pubyear")} placeholder="Publication Year" />
+        <input {...register("pubYear")} placeholder="Publication Year" />
       </p>
       <p>
         <input {...register("doi")} placeholder="DOI" />
@@ -25,7 +25,7 @@ export default function SubmissionForm() {
       <select {...register("linked_discussion")}>
         <option value="">Select SE practice...</option>
         <option value="TDD">TDD</option>
-        <option value="Mob Programming">Mob Programmin</option>
+        <option value="Mob Programming">Mob Programming</option>
       </select>
       <input type="submit" />
     </form>
