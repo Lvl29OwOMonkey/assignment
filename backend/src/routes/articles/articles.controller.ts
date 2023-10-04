@@ -25,9 +25,9 @@ export class ArticlesController {
 
   // Endpoint for searching articles by title
   @Get(":id")
-    getProduct(@Param("id") titleId: string){
-        return this.articlesService.getArticleTitle(titleId);
-    }
+  getProduct(@Param("id") title: string) {
+    return this.articlesService.findArticle(title);
+  }
 
   @Header("Content-Type", "application/json")
   @Post()

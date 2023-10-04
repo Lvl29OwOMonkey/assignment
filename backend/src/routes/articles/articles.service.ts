@@ -26,31 +26,9 @@ export class ArticlesService {
     this.articleModel.updateOne({ _id: id }, updateArticleDto);
   }
 
-  // Function to get article by title
-  async getArticleTitle(titleId: string) {
-    const article = await this.findArticle(titleId);
-    return {
-      title : article.title,
-      authors : article.authors,
-      source : article.source,
-      pubYear : article.pubYear,
-      doi : article.doi,
-      summary : article.summary,
-    };
-  }
-
   // Function to find article by title
-  private async findArticle(titleId: string) : Promise<Article> {
-    let article;
-    try {
-      article = await this.articleModel.findOne({ title: titleId });
-    } catch (error) {
-      throw error;
-    }
-    if (!article) {
-      throw new Error("Could not find article.");
-    }
-    return article;
+  async findArticle(title: string) : Promise<Article[]> {
+    return await this.articleModel.find({title:{$regex:`^${title}`, $options:"i"}});
   }
 
 }
