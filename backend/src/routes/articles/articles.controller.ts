@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Param,
   Res,
   Header,
   HttpStatus,
@@ -21,6 +22,12 @@ export class ArticlesController {
   findAll(): Promise<Article[]> {
     return this.articlesService.findAll();
   }
+
+  // Endpoint for searching articles by title
+  @Get(":id")
+    getProduct(@Param("id") titleId: string){
+        return this.articlesService.getArticleTitle(titleId);
+    }
 
   @Header("Content-Type", "application/json")
   @Post()

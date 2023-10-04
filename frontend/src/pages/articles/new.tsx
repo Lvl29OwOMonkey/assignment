@@ -41,6 +41,7 @@ const NewDiscussion = () => {
 					pubYear,
 					doi,
 					summary,
+					linkedDiscussion,
 				}),
 			});
 			if (result.status === 200) {

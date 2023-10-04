@@ -2,6 +2,7 @@ import { GetStaticProps, NextPage } from "next";
 import SortableTable from "../../components/table/SortableTable";
 import Head from "next/head";
 import { useState } from "react";
+import { SearchArticle } from "../api/api";
 
 interface ArticlesInterface {
   id: string;
@@ -20,7 +21,7 @@ type ArticlesProps = {
 
 
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
-  const [sortedArticles, /* setSortedArticles */] = useState<ArticlesInterface[]>(articles);
+  const [sortedArticles, setSortedArticles] = useState<ArticlesInterface[]>(articles);
   const [sortKey, /* setSortKey */] = useState<keyof ArticlesInterface>("title");
 
   sortedArticles.sort((a: ArticlesInterface, b: ArticlesInterface) => {
@@ -36,13 +37,17 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
     { key: "claim", label: "Claim" },
     { key: "evidence", label: "Evidence" },
   ];
-
+  
   return (
     <div className="container">
       <Head>
         <title>View Articles</title>
       </Head>
       <h1>Articles Index Page</h1>
+
+      <input type="text" id="searchInput" placeholder="Search Articles Here..."/>
+      <button onClick={async ()=>{setSortedArticles([await SearchArticle((document.getElementById("searchInput") as HTMLInputElement).value)]);}} type="button" id="searchButton">Search</button>
+
       <p>Page containing a table of articles:</p>
       <SortableTable headers={headers} data={sortedArticles} />
     </div>
