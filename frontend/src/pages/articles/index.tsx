@@ -3,6 +3,7 @@ import SortableTable from "../../components/table/SortableTable";
 import Head from "next/head";
 import { useState } from "react";
 import { SearchArticle } from "../api/api";
+import axios from "axios";
 
 interface ArticlesInterface {
   id: string;
@@ -46,7 +47,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       <h1>Articles Index Page</h1>
 
       <input type="text" id="searchInput" placeholder="Search Articles Here..."/>
-      <button onClick={async ()=>{setSortedArticles([await SearchArticle((document.getElementById("searchInput") as HTMLInputElement).value)]);}} type="button" id="searchButton">Search</button>
+      <button onClick={async ()=>{setSortedArticles(await SearchArticle((document.getElementById("searchInput") as HTMLInputElement).value));}} type="button" id="searchButton">Search</button>
 
       <p>Page containing a table of articles:</p>
       <SortableTable headers={headers} data={sortedArticles} />
@@ -56,8 +57,9 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
 export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
   // Fetch articles from Backend
-    const articles = await (await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`)).json();
-    
+    const request = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`);
+    const articles = request.data;
+
   return {
     props: {
       articles,

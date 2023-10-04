@@ -1,5 +1,6 @@
 import { GetStaticProps, NextPage } from "next";
 import SortableTable from "../../components/table/SortableTable";
+import axios from "axios";
 
 interface ArticlesInterface {
   id: string;
@@ -40,7 +41,8 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
 export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
   // Fetch articles from Backend
-    const articles = await (await fetch("http://localhost:3001/articles")).json();
+  const request = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`);
+  const articles = request.data;
     
   return {
     props: {
