@@ -20,8 +20,8 @@ type ArticlesProps = {
 
 
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
-  const [sortedArticles, setSortedArticles] = useState<ArticlesInterface[]>(articles);
-  const [sortKey, setSortKey] = useState<keyof ArticlesInterface>("title");
+  const [sortedArticles, /* setSortedArticles */] = useState<ArticlesInterface[]>(articles);
+  const [sortKey, /* setSortKey */] = useState<keyof ArticlesInterface>("title");
 
   sortedArticles.sort((a: ArticlesInterface, b: ArticlesInterface) => {
     return a[sortKey].toString().toLowerCase() > b[sortKey].toString().toLowerCase() ? 1 : -1;
