@@ -3,10 +3,10 @@ import {
   Controller,
   Get,
   Post,
-  Param,
   Res,
   Header,
   HttpStatus,
+  Query,
 } from "@nestjs/common";
 import { Response } from "express";
 
@@ -19,15 +19,21 @@ export class ArticlesController {
 
   @Header("Content-Type", "application/json")
   @Get()
-  findAll(): Promise<Article[]> {
-    return this.articlesService.findAll();
+  async findArticles(
+    @Query("title") title: string,
+    @Query("se") se: string,
+  ): Promise<Article[]> {
+    if (!title && !se) {
+      return this.articlesService.findAll();
+    }
+    return this.articlesService.findArticle(title, se);
   }
 
   // Endpoint for searching articles by title
-  @Get(":id")
+  /* @Get(":id")
   getProduct(@Param("id") title: string) {
     return this.articlesService.findArticle(title);
-  }
+  }*/
 
   @Header("Content-Type", "application/json")
   @Post()

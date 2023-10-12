@@ -47,7 +47,18 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       <h1>Articles Index Page</h1>
 
       <input type="text" id="searchInput" placeholder="Search Articles Here..."/>
-      <button onClick={async ()=>{setSortedArticles(await SearchArticle((document.getElementById("searchInput") as HTMLInputElement).value));}} type="button" id="searchButton">Search</button>
+      <select id="seDropdown" defaultValue={""}>
+        <option value={""} hidden disabled>Please select a SE method</option>
+        <option value={"test1"}>Test 1</option>
+        <option value={"test2"}>Test 2</option>
+        <option value={"test3"}>Test 3</option>
+      </select>
+      <button onClick={async ()=>{
+          const searchInput = document.getElementById("searchInput") as HTMLInputElement;
+          const seDropdown = document.getElementById("seDropdown") as HTMLSelectElement;
+          const articles = await SearchArticle(searchInput.value, seDropdown.value);
+          setSortedArticles(articles);
+        }} type="button" id="searchButton">Search</button>
 
       <p>Page containing a table of articles:</p>
       <SortableTable headers={headers} data={sortedArticles} />
