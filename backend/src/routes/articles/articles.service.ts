@@ -25,4 +25,10 @@ export class ArticlesService {
   async update(id: string, updateArticleDto: any) {
     this.articleModel.updateOne({ _id: id }, updateArticleDto);
   }
+
+  // Function to find article by title
+  async findArticle(title: string, se: string) : Promise<Article[]> {
+    return await this.articleModel.find({title:{$regex:`^${title}`, $options:"i"}, se});
+  }
+
 }
