@@ -33,9 +33,10 @@ export const ArticlesSchema = new mongoose.Schema(
       type: String,
       required: [true, "Summary is required"],
     },
-    linkedDiscussion: {
+    se: {
       type: String,
       required: [true, "Linked discussion is required"],
+      default: "test1"
     },
     submitDate: {
       type: Date,
