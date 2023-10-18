@@ -2,6 +2,7 @@ import { GetStaticProps, NextPage } from "next";
 import SortableTable from "../../components/table/SortableTable";
 import Head from "next/head";
 import { useState } from "react";
+import BetterDataTable from "../../components/BetterDataTable";
 
 interface ArticlesInterface {
   id: string;
@@ -21,11 +22,6 @@ type ArticlesProps = {
 
 const Articles: NextPage<ArticlesProps> = ({ articles }) => {
   const [sortedArticles, /* setSortedArticles */] = useState<ArticlesInterface[]>(articles);
-  const [sortKey, /* setSortKey */] = useState<keyof ArticlesInterface>("title");
-
-  sortedArticles.sort((a: ArticlesInterface, b: ArticlesInterface) => {
-    return a[sortKey].toString().toLowerCase() > b[sortKey].toString().toLowerCase() ? 1 : -1;
-  });
 
   const headers: { key: keyof ArticlesInterface; label: string }[] = [
     { key: "title", label: "Title" },
@@ -44,7 +40,8 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
       </Head>
       <h1>Articles Index Page</h1>
       <p>Page containing a table of articles:</p>
-      <SortableTable headers={headers} data={sortedArticles} />
+      {/* <SortableTable headers={headers} data={sortedArticles} /> */}
+      <BetterDataTable rows={sortedArticles} />
     </div>
   );
 };
