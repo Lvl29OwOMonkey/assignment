@@ -1,7 +1,8 @@
 import { GetStaticProps, NextPage } from "next";
-import SortableTable from "../../components/table/SortableTable";
 import Head from "next/head";
 import { useState } from "react";
+import BetterDataTable from "../../components/BetterDataTable";
+import { GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
 
 interface ArticlesInterface {
@@ -23,14 +24,18 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 	const [sortedArticles, setSortedArticles] =
 		useState<ArticlesInterface[]>(articles);
 
-	const headers: { key: keyof ArticlesInterface; label: string }[] = [
-		{ key: "title", label: "Title" },
-		{ key: "authors", label: "Authors" },
-		{ key: "source", label: "Source" },
-		{ key: "pubYear", label: "Publication Year" },
-		{ key: "doi", label: "DOI" },
-		{ key: "claim", label: "Claim" },
-		{ key: "evidence", label: "Evidence" },
+	const headers: GridColDef[] = [
+		{ field: "title", headerName: "Title" },
+		{
+			field: "authors",
+			headerName: "Authors",
+			valueGetter: (params) => params.row.authors.join(", "),
+		},
+		{ field: "source", headerName: "Source" },
+		{ field: "pubYear", headerName: "Publication Year" },
+		{ field: "doi", headerName: "DOI" },
+		{ field: "claim", headerName: "Claim" },
+		{ field: "evidence", headerName: "Evidence" },
 	];
 
 	return (
@@ -59,10 +64,16 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 				<input
 					type="text"
 					id="searchInput"
+					className="text-black rounded-md "
 					placeholder="Search Articles Here..."
 					required
 				/>
-				<select id="seDropdown" defaultValue={""} required>
+				<select
+					id="seDropdown"
+					className="text-black rounded-md ml-1"
+					defaultValue={""}
+					required
+				>
 					<option value={""} hidden disabled>
 						Please select a SE method
 					</option>
@@ -70,10 +81,15 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 					<option value={"test2"}>Test 2</option>
 					<option value={"test3"}>Test 3</option>
 				</select>
-				<button type="submit" id="searchButton">
+				<button
+					type="submit"
+					className="p-0.5 text-black bg-slate-400 rounded-md mx-1"
+					id="searchButton"
+				>
 					Search
 				</button>
 				<button
+					className="p-0.5 text-black bg-slate-400 rounded-md"
 					type="reset"
 					id="resetButton"
 					onClick={async () => {
@@ -88,11 +104,11 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 				</button>
 			</form>
 
-      <p>Page containing a table of articles:</p>
-      {/* <SortableTable headers={headers} data={sortedArticles} /> */}
-      <BetterDataTable rows={sortedArticles} />
-    </div>
-  );
+			<p>Page containing a table of articles:</p>
+			{/* <SortableTable headers={headers} data={sortedArticles} /> */}
+			<BetterDataTable columns={headers} rows={sortedArticles} />
+		</div>
+	);
 };
 
 export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
@@ -110,5 +126,3 @@ export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
 };
 
 export default Articles;
-
-// src/pages/DataPage.tsx
