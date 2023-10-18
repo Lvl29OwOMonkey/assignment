@@ -1,29 +1,71 @@
-import React from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import React from "react";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 const columns: GridColDef[] = [
-  { field: 'title', headerName: 'Title', width: 130 },
-  { field: 'author', headerName: 'Authors', width: 130 },
-  { field: 'source', headerName: 'Article Source', width: 130 },
-  { field: 'result', headerName: 'Evidence Result', width: 130 },
-  { field: 'publication_Year', headerName: 'Publication Year', width: 130 },
-  { field: 'journal_name', headerName: 'Journal/Conference Name', width: 130 },
-  { field: 'se_practice', headerName: 'Software Engineering Practice', width: 130 },
-  { field: 'research_type', headerName: 'Research Type', width: 130 },
-  { field: 'participant', headerName: 'Participant Type', width: 130 },
-  { field: 'rating', headerName: 'Average Rating', width: 130 },
+	{ field: "title", headerName: "Title" },
+	{ field: "authors", headerName: "Authors" },
+	{ field: "source", headerName: "Source" },
+	{ field: "pubYear", headerName: "Publication Year" },
+	{ field: "doi", headerName: "DOI" },
+	{ field: "claim", headerName: "Claim" },
+	{ field: "evidence", headerName: "Evidence" },
 ];
 
 interface DataTableProps {
-  rows: any[]; // Change the type to match your data structure
+	rows: any[]; // Change the type to match your data structure
 }
 
-const betterDataTable: React.FC<DataTableProps> = ({ rows }) => {
-  return (
-    <div style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} />
-    </div>
-  );
+const BetterDataTable: React.FC<DataTableProps> = ({ rows }) => {
+	columns.forEach((column) => {
+		column.flex = 1;
+	});
+	rows.map((row, i) => {
+		row.id = i;
+	});
+	return (
+		<div>
+			<DataGrid
+				rows={rows}
+				columns={columns}
+				initialState={{
+					pagination: {
+						paginationModel: { page: 0, pageSize: 5 },
+					},
+				}}
+				sx={{
+					"& .MuiSvgIcon-root": { color: "white !important" },
+					"& .MuiTablePagination-root": { color: "white !important" },
+				}}
+				classes={{
+					row: "text-white",
+					columnHeader: "text-white",
+					menuIconButton: "text-white",
+				}}
+			/>
+			{/* <TableHead>
+				<TableRow>
+					{columns.map((column) => (
+						<TableCell
+							key={column.field}
+							classes={{ root: "text-white font-bold" }}
+						>
+							<TableSortLabel
+								active={true}
+								direction="asc"
+								sx={{
+									"& .MuiTableSortLabel-icon": { color: "white !important" },
+                  "& .MuiTableSortLabel-root": { color: "white !important" },
+								}}
+								// onClick={createSortHandler(column.field)}
+							>
+								{column.headerName}
+							</TableSortLabel>
+						</TableCell>
+					))}
+				</TableRow>
+			</TableHead> */}
+		</div>
+	);
 };
 
-export default betterDataTable;
+export default BetterDataTable;
