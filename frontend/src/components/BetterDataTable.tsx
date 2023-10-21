@@ -1,4 +1,4 @@
-mport React from "react";
+import React from "react";
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 
 interface DataTableProps {
