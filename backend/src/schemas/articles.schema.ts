@@ -10,7 +10,6 @@ export const ArticlesSchema = new mongoose.Schema(
       type: [
         {
           type: String,
-          
         },
       ],
       required: [true, "At least one author is required"],
@@ -23,19 +22,23 @@ export const ArticlesSchema = new mongoose.Schema(
     pubYear: {
       type: Number,
       required: [true, "Publication year is required"],
+      validate: [validYear, "Publication year must be between 1500 and current year"],
     },
     doi: {
-      type: String,
+      type: Number,
       required: [true, "DOI is required"],
       unique: true,
+      validate: [notNegative, "DOI must be a positive number"],
     },
     volume: {
       type: Number,
       required: [true, "Volume is required"],
+      validate: [notNegative, "Volume must be a positive number"],
     },
     pages: {
       type: Number,
       required: [true, "Pages are required"],
+      validate: [notNegative, "Pages must be a positive number"],
     },
     se: {
       type: String,
@@ -61,5 +64,13 @@ export const ArticlesSchema = new mongoose.Schema(
 );
 
 function authorsCheck(val) {
-    return val.length >= 1; 
-  }
+  return val.length >= 1;
+}
+
+function notNegative(val) {
+  return val >= 1;
+}
+
+function validYear(val) {
+  return val >= 1500 && val <= new Date().getFullYear();
+}
