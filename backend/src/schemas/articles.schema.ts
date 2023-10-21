@@ -29,14 +29,30 @@ export const ArticlesSchema = new mongoose.Schema(
       required: [true, "DOI is required"],
       unique: true,
     },
-    summary: {
-      type: String,
-      required: [true, "Summary is required"],
+    volume: {
+      type: Number,
+      required: [true, "Volume is required"],
+    },
+    pages: {
+      type: Number,
+      required: [true, "Pages are required"],
     },
     se: {
       type: String,
       required: [true, "Linked discussion is required"],
       default: "test1"
+    },
+    evidence: {
+      type: String,
+      required: [true, "Evidence is required"],
+    },
+    type: {
+      type: String,
+      required: [true, "Type is required"],
+    },
+    status: {
+      type: String,
+      default: "pending",
     },
     submitDate: {
       type: Date,

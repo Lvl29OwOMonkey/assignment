@@ -1,7 +1,5 @@
-import { Document } from "mongoose";
-
-export interface Article extends Document {
-  // Core Info
+export interface ArticlesInterface {
+	// Core Info
 	_id: string;
 	status: string;
 	submitDate: Date;

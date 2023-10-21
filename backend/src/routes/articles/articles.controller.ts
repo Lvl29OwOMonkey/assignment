@@ -7,6 +7,7 @@ import {
   Header,
   HttpStatus,
   Query,
+  Param,
 } from "@nestjs/common";
 import { Response } from "express";
 
@@ -24,9 +25,41 @@ export class ArticlesController {
     @Query("se") se: string,
   ): Promise<Article[]> {
     if (!title && !se) {
-      return this.articlesService.findAll();
+      return this.articlesService.findAll(true);
     }
-    return this.articlesService.findArticle(title, se);
+    return this.articlesService.findArticle(title, se, true);
+  }
+
+  @Header("Content-Type", "application/json")
+  @Get("analyst")
+  async findAnalysis(
+    @Query("title") title: string,
+    @Query("se") se: string,
+  ): Promise<Article[]> {
+    if (!title && !se) {
+      return this.articlesService.findAll(false);
+    }
+    return this.articlesService.findArticle(title, se, false);
+  }
+
+  @Post("analyst/:doi")
+  async updateAnalysisArticle(
+    @Param("doi") doi: string,
+    @Body() articleData: any,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<string> {
+    try {
+      await this.articlesService.update(doi, articleData);
+      res.status(HttpStatus.NO_CONTENT);
+      return;
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST);
+
+      return JSON.stringify({
+        error: "Unknown error",
+        message: error.message,
+      });
+    }
   }
 
   // Endpoint for searching articles by title
