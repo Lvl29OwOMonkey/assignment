@@ -39,16 +39,12 @@ export const ArticlesSchema = new mongoose.Schema(
     },
     se: {
       type: String,
-      required: [true, "Linked discussion is required"],
-      default: "test1"
     },
     evidence: {
       type: String,
-      required: [true, "Evidence is required"],
     },
     type: {
       type: String,
-      required: [true, "Type is required"],
     },
     status: {
       type: String,
