@@ -73,7 +73,10 @@ const Articles: NextPage<ArticlesProps> = ({ articlesData }) => {
 						"seDropdown"
 					) as HTMLSelectElement;
 					const request = await axios.get(
-						`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles?title=${searchInput.value}&se=${seDropdown.value}`
+						`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles?title=${searchInput.value}&se=${seDropdown.value}`,
+						{
+							validateStatus: () => true,
+						}
 					);
 					const articles = request.data;
 					setArticles(articles);
@@ -112,7 +115,10 @@ const Articles: NextPage<ArticlesProps> = ({ articlesData }) => {
 					id="resetButton"
 					onClick={async () => {
 						const request = await axios.get(
-							`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`
+							`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`,
+							{
+								validateStatus: () => true,
+							}
 						);
 						const articles = request.data;
 						setArticles(articles);
@@ -173,8 +179,12 @@ const Articles: NextPage<ArticlesProps> = ({ articlesData }) => {
 export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
 	// Fetch articles from Backend
 	const request = await axios.get(
-		`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`
+		`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`,
+		{
+			validateStatus: () => true,
+		}
 	);
+
 	const articlesData = request.data;
 
 	return {

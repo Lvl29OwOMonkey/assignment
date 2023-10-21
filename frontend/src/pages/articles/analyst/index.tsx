@@ -380,8 +380,20 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
 	// Fetch articles from Backend
 	const request = await axios.get(
-		`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/analyst`
+		`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/analyst`,
+		{
+			validateStatus: () => true,
+		}
 	);
+
+	if (request.status !== 200) {
+		return {
+			props: {
+				articles: [],
+			},
+		};
+	}
+	
 	const articles = request.data;
 
 	return {
