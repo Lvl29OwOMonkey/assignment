@@ -5,7 +5,10 @@ import { configDotenv } from "dotenv";
 async function bootstrap() {
   configDotenv();
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    preflightContinue: false,
+    optionsSuccessStatus: 200,
+  });
   await app.listen(3001);
 }
 bootstrap();
