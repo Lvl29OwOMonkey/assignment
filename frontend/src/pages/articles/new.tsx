@@ -206,21 +206,6 @@ const NewDiscussion = () => {
 					}}
 					required
 				/>
-				<label htmlFor="sePractice">Software Engineering Practice:</label>
-				<select
-					className={formStyles.formItem}
-					name="Software Engineering Practice"
-					id="sePractice"
-					value={sePractice}
-					onChange={(event) => setSePractice(event.target.value)}
-				>
-					<option value="" hidden disabled>
-						Select SE practice...
-					</option>
-					<option value="agile">Agile</option>
-					<option value="sprint">Sprint</option>
-					<option value="mob_programming">Mob Programming</option>
-				</select>
 				<button className={formStyles.submitButton} type="submit">
 					Submit
 				</button>

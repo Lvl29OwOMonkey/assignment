@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import axios from "axios";
 import { ArticlesInterface } from "../../../../types/schema";
 import { GridColDef } from "@mui/x-data-grid";
@@ -377,7 +377,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 	);
 };
 
-export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
+export const getServerSideProps: GetServerSideProps<ArticlesProps> = async () => {
 	// Fetch articles from Backend
 	const request = await axios.get(
 		`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/analyst`,
@@ -393,7 +393,7 @@ export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
 			},
 		};
 	}
-	
+
 	const articles = request.data;
 
 	return {

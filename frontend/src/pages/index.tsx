@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import BetterDataTable from "../components/BetterDataTable";
@@ -176,7 +176,7 @@ const Articles: NextPage<ArticlesProps> = ({ articlesData }) => {
 	);
 };
 
-export const getStaticProps: GetStaticProps<ArticlesProps> = async () => {
+export const getServerSideProps: GetServerSideProps<ArticlesProps> = async () => {
 	// Fetch articles from Backend
 	const request = await axios.get(
 		`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`,
