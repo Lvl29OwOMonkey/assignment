@@ -1,5 +1,10 @@
 export interface ArticlesInterface {
-	id: string;
+	// Core Info
+	_id: string;
+	status: string;
+	submitDate: Date;
+	
+	// Submission Info
 	title: string;
 	authors: string[];
 	source: string;
@@ -7,9 +12,9 @@ export interface ArticlesInterface {
 	doi: string;
 	volume: number;
 	pages: number;
+	
+	// Analyst Info
 	se: string;
-	status: string;
-	submitDate: Date;
-	claim: string;
 	evidence: string;
+	type: string;
 }

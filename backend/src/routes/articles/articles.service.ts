@@ -19,12 +19,12 @@ export class ArticlesService {
     return this.articleModel.find({status: "pending"}).exec();
   }
 
-  async findOne(id: string): Promise<Article> {
-    return this.articleModel.findOne({ _id: id });
+  async findOne(doi: string): Promise<Article> {
+    return this.articleModel.findOne({ doi });
   }
 
-  async update(id: string, updateArticleDto: any) {
-    this.articleModel.updateOne({ _id: id }, updateArticleDto);
+  async update(doi: string, updateArticleDto: any) {
+    await this.articleModel.updateOne({ doi }, updateArticleDto);
   }
 
   // Function to find article by title

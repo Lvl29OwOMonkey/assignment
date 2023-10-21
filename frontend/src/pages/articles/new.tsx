@@ -68,7 +68,6 @@ const NewDiscussion = () => {
 				}
 			}
 		} catch (err) {
-			console.error("Error submitting new article:", err);
 			setError("Error submitting new article");
 		}
 

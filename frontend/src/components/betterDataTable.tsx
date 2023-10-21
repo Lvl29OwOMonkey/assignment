@@ -5,7 +5,7 @@ interface DataTableProps {
 	columns: GridColDef[];
 	rows: any[]; // Change the type to match your data structure
 	// eslint-disable-next-line no-unused-vars
-	clickAction(params: GridRowParams<any>): void;
+	clickAction?(params: GridRowParams<any>): void;
 }
 
 const BetterDataTable: React.FC<DataTableProps> = ({ columns, rows, clickAction }) => {
