@@ -62,6 +62,25 @@ export class ArticlesController {
     }
   }
 
+  @Post("analyst/:doi/decline")
+  async declineAnalysisArticle(
+    @Param("doi") doi: string,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<string> {
+    try {
+      await this.articlesService.update(doi, { status: "declined" });
+      res.status(HttpStatus.NO_CONTENT);
+      return;
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST);
+
+      return JSON.stringify({
+        error: "Unknown error",
+        message: error.message,
+      });
+    }
+  }
+
   // Endpoint for searching articles by title
   /* @Get(":id")
   getProduct(@Param("id") title: string) {
@@ -79,6 +98,25 @@ export class ArticlesController {
     } catch (error) {
       res.status(HttpStatus.BAD_REQUEST);
       if (error.code === 11000) {
+        const existingArticle = await this.articlesService.findOne(articleData.doi);
+
+        if (existingArticle.status === "approved") {
+          return JSON.stringify({
+            error: "AlreadyApproved",
+            message: `The DOI ${articleData.doi} has already been approved`,
+          });
+        } else if (existingArticle.status === "pending") {
+          return JSON.stringify({
+            error: "AlreadyPending",
+            message: `The DOI ${articleData.doi} is already pending`,
+          });
+        } else if (existingArticle.status === "declined") {
+          return JSON.stringify({
+            error: "AlreadyDeclined",
+            message: `The DOI ${articleData.doi} has already been declined`,
+          });
+        }
+
         return JSON.stringify({
           error: "DuplicateKey",
           message: `The DOI ${articleData.doi} already exists`,

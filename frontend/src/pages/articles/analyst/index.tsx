@@ -198,7 +198,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 												Volume:
 											</label>
 											<input
-												type="text"
+												type="number"
 												name="volume"
 												id="volume"
 												placeholder="Volume..."
@@ -275,6 +275,11 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 												formData.entries()
 											);
 
+											data["se"] = data["se"]
+												.toString()
+												.toLowerCase()
+												.replace(" ", "_");
+
 											data["status"] = "approved";
 
 											const response = await axios.post(
@@ -299,13 +304,16 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 											<label htmlFor="sePractice">
 												Software Engineering Practice:
 											</label>
-											<select
+											<input
 												name="se"
+												list="defaults"
 												id="sePractice"
-												className="text-black rounded-md"
+												className="text-black rounded-md w-48"
+												placeholder="Please type SE practice..."
 												defaultValue=""
 												required
-											>
+											/>
+											<datalist id="defaults">
 												<option
 													value=""
 													hidden
@@ -313,16 +321,10 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 												>
 													Select SE practice...
 												</option>
-												<option value="agile">
-													Agile
-												</option>
-												<option value="sprint">
-													Sprint
-												</option>
-												<option value="mob_programming">
-													Mob Programming
-												</option>
-											</select>
+												<option value="Agile" />
+												<option value="Sprint" />
+												<option value="Mob Programming" />
+											</datalist>
 										</div>
 										<div className="flex flex-col">
 											<label htmlFor="evidence">
@@ -350,7 +352,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 
 										<div className="flex space-x-5 justify-center">
 											<button
-												className="p-2 bg-white rounded-md text-black"
+												className="p-2 bg-green-500 rounded-md text-black"
 												type="submit"
 											>
 												Approve
@@ -363,6 +365,32 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 												}
 											>
 												Close
+											</button>
+											<button
+												className="p-2 bg-red-500 rounded-md text-black"
+												type="button"
+												onClick={async () => {
+													const response =
+														await axios.post(
+															`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/analyst/${selectedArticle.doi}/decline`
+														);
+
+													if (
+														response.status === 204
+													) {
+														setSelectedArticle(
+															null
+														);
+														await refresh();
+													} else {
+														setAddError(
+															response.data
+																.message
+														);
+													}
+												}}
+											>
+												Decline
 											</button>
 										</div>
 										{addError && (

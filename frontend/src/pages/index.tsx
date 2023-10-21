@@ -61,7 +61,9 @@ const Articles: NextPage<ArticlesProps> = ({ articlesData }) => {
 			<Head>
 				<title>SPEED</title>
 			</Head>
-			<h1 className="text-3xl">Software Practice Empirical Evidence Database (SPEED)</h1>
+			<h1 className="text-3xl">
+				Software Practice Empirical Evidence Database (SPEED)
+			</h1>
 
 			<form
 				onSubmit={async (e) => {
@@ -72,8 +74,11 @@ const Articles: NextPage<ArticlesProps> = ({ articlesData }) => {
 					const seDropdown = document.getElementById(
 						"seDropdown"
 					) as HTMLSelectElement;
+					
+					const seValue = seDropdown.value.toLowerCase().replace(" ", "_");
+
 					const request = await axios.get(
-						`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles?title=${searchInput.value}&se=${seDropdown.value}`,
+						`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles?title=${searchInput.value}&se=${seValue}`,
 						{
 							validateStatus: () => true,
 						}
@@ -88,19 +93,23 @@ const Articles: NextPage<ArticlesProps> = ({ articlesData }) => {
 					className="text-black rounded-md "
 					placeholder="Search Articles Here..."
 				/>
-				<select
+				<input
+					name="se"
+					list="defaults"
 					id="seDropdown"
-					className="text-black rounded-md ml-1"
-					defaultValue={""}
+					className="text-black rounded-md w-48"
+					defaultValue=""
+					placeholder="Please type SE practice..."
 					required
-				>
-					<option value={""} hidden disabled>
-						Please select a SE method
+				/>
+				<datalist id="defaults">
+					<option value="" hidden disabled>
+						Select SE practice...
 					</option>
-					<option value="agile">Agile</option>
-					<option value="sprint">Sprint</option>
-					<option value="mob_programming">Mob Programming</option>
-				</select>
+					<option value="Agile" />
+					<option value="Sprint" />
+					<option value="Mob Programming" />
+				</datalist>
 				<button
 					type="submit"
 					className="p-0.5 text-black bg-slate-400 rounded-md mx-1"
@@ -176,7 +185,9 @@ const Articles: NextPage<ArticlesProps> = ({ articlesData }) => {
 	);
 };
 
-export const getServerSideProps: GetServerSideProps<ArticlesProps> = async () => {
+export const getServerSideProps: GetServerSideProps<
+	ArticlesProps
+> = async () => {
 	// Fetch articles from Backend
 	const request = await axios.get(
 		`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`,
