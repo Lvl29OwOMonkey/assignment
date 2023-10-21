@@ -8,9 +8,9 @@ const NewDiscussion = () => {
 	const [authors, setAuthors] = useState<string[]>([]);
 	const [source, setSource] = useState("");
 	const [pubYear, setPubYear] = useState(new Date().getFullYear());
-	const [doi, setDoi] = useState("");
-	const [volume, setVolume] = useState("");
-	const [pages, setPages] = useState(0);
+	const [doi, setDoi] = useState(0);
+	const [volume, setVolume] = useState(1);
+	const [pages, setPages] = useState(1);
 
 	const [submitted, setSubmitted] = useState(false);
 	const [error, setError] = useState("");
@@ -161,7 +161,7 @@ const NewDiscussion = () => {
 					name="pubYear"
 					id="pubYear"
 					value={pubYear}
-					min={1900}
+					min={1500}
 					max={new Date().getFullYear()}
 					onChange={(event) => {
 						const val = event.target.value;
@@ -179,7 +179,8 @@ const NewDiscussion = () => {
 					type="number"
 					name="volume"
 					value={volume}
-					onChange={(event) => setVolume(event.target.value)}
+					min={1}
+					onChange={(event) => setVolume(parseInt(event.target.value))}
 					required
 				/>
 				<label htmlFor="pages">Pages:</label>
@@ -188,6 +189,7 @@ const NewDiscussion = () => {
 					type="number"
 					name="pages"
 					id="pages"
+					min={1}
 					value={pages}
 					onChange={(event) => setPages(parseInt(event.target.value))}
 					required
@@ -195,12 +197,13 @@ const NewDiscussion = () => {
 				<label htmlFor="doi">DOI:</label>
 				<input
 					className={formStyles.formItem}
-					type="text"
+					type="number"
 					name="doi"
 					id="doi"
 					value={doi}
+					min={1}
 					onChange={(event) => {
-						setDoi(event.target.value);
+						setDoi(parseInt(event.target.value));
 					}}
 					required
 				/>

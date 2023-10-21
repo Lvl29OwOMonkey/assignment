@@ -187,6 +187,8 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 												defaultValue={
 													selectedArticle.pubYear
 												}
+												min={1500}
+												max={new Date().getFullYear()}
 												required
 											/>
 										</div>
@@ -201,6 +203,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 												id="volume"
 												placeholder="Volume..."
 												className="text-black rounded-md"
+												min={1}
 												defaultValue={
 													selectedArticle.volume
 												}
@@ -217,6 +220,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 												id="pages"
 												placeholder="Pages..."
 												className="text-black rounded-md"
+												min={1}
 												defaultValue={
 													selectedArticle.pages
 												}
@@ -377,7 +381,9 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 	);
 };
 
-export const getServerSideProps: GetServerSideProps<ArticlesProps> = async () => {
+export const getServerSideProps: GetServerSideProps<
+	ArticlesProps
+> = async () => {
 	// Fetch articles from Backend
 	const request = await axios.get(
 		`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/analyst`,
