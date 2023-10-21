@@ -11,7 +11,6 @@ const NewDiscussion = () => {
 	const [doi, setDoi] = useState("");
 	const [volume, setVolume] = useState("");
 	const [pages, setPages] = useState(0);
-	const [sePractice, setSePractice] = useState<string>("");
 
 	const [submitted, setSubmitted] = useState(false);
 	const [error, setError] = useState("");
@@ -45,7 +44,6 @@ const NewDiscussion = () => {
 						doi,
 						volume,
 						pages,
-						se: sePractice,
 					}),
 				}
 			);
