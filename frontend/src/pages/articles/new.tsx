@@ -100,7 +100,7 @@ const NewDiscussion = () => {
 			<Head>
 				<title>New Article</title>
 			</Head>
-			<h1>New Article</h1>
+			<h1 className="text-3xl font-bold">New Article</h1>
 			<form className={formStyles.form} onSubmit={submitNewArticle}>
 				<label htmlFor="title">Title:</label>
 				<input
@@ -179,6 +179,7 @@ const NewDiscussion = () => {
 				<label htmlFor="volume">Volume:</label>
 				<input
 					className={formStyles.formItem}
+					type="number"
 					name="volume"
 					value={volume}
 					onChange={(event) => setVolume(event.target.value)}

@@ -24,9 +24,21 @@ export class ArticlesController {
     @Query("se") se: string,
   ): Promise<Article[]> {
     if (!title && !se) {
-      return this.articlesService.findAll();
+      return this.articlesService.findAll(true);
     }
-    return this.articlesService.findArticle(title, se);
+    return this.articlesService.findArticle(title, se, true);
+  }
+
+  @Header("Content-Type", "application/json")
+  @Get("analyst")
+  async findAnalysis(
+    @Query("title") title: string,
+    @Query("se") se: string,
+  ): Promise<Article[]> {
+    if (!title && !se) {
+      return this.articlesService.findAll(false);
+    }
+    return this.articlesService.findArticle(title, se, false);
   }
 
   // Endpoint for searching articles by title

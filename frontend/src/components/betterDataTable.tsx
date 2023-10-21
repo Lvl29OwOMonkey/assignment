@@ -1,12 +1,14 @@
 import React from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 
 interface DataTableProps {
 	columns: GridColDef[];
 	rows: any[]; // Change the type to match your data structure
+	// eslint-disable-next-line no-unused-vars
+	clickAction(params: GridRowParams<any>): void;
 }
 
-const BetterDataTable: React.FC<DataTableProps> = ({ columns, rows }) => {
+const BetterDataTable: React.FC<DataTableProps> = ({ columns, rows, clickAction }) => {
 	columns.forEach((column) => {
 		column.flex = 1;
 	});
@@ -32,6 +34,7 @@ const BetterDataTable: React.FC<DataTableProps> = ({ columns, rows }) => {
 					columnHeader: "text-white",
 					menuIconButton: "text-white",
 				}}
+				onRowClick={clickAction}
 			/>
 		</div>
 	);

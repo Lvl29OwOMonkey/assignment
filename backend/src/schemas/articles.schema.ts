@@ -30,7 +30,7 @@ export const ArticlesSchema = new mongoose.Schema(
       unique: true,
     },
     volume: {
-      type: String,
+      type: Number,
       required: [true, "Volume is required"],
     },
     pages: {

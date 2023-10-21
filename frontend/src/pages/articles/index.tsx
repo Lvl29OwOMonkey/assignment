@@ -4,17 +4,7 @@ import { useState } from "react";
 import BetterDataTable from "../../components/BetterDataTable";
 import { GridColDef } from "@mui/x-data-grid";
 import axios from "axios";
-
-interface ArticlesInterface {
-	id: string;
-	title: string;
-	authors: string[];
-	source: string;
-	pubYear: string;
-	doi: string;
-	claim: string;
-	evidence: string;
-}
+import { ArticlesInterface } from "@/utils/schema";
 
 type ArticlesProps = {
 	articles: ArticlesInterface[];
@@ -34,8 +24,14 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 		{ field: "source", headerName: "Source" },
 		{ field: "pubYear", headerName: "Publication Year" },
 		{ field: "doi", headerName: "DOI" },
-		{ field: "claim", headerName: "Claim" },
-		{ field: "evidence", headerName: "Evidence" },
+		{ field: "volume", headerName: "Volume" },
+		{
+			field: "pages",
+			headerName: "Pages",
+			type: "number",
+			align: "left",
+			headerAlign: "left",
+		},
 	];
 
 	return (
@@ -43,7 +39,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 			<Head>
 				<title>View Articles</title>
 			</Head>
-			<h1>Articles Index Page</h1>
+			<h1 className="text-3xl font-bold">Articles Index Page</h1>
 
 			<form
 				onSubmit={async (e) => {
@@ -66,7 +62,6 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 					id="searchInput"
 					className="text-black rounded-md "
 					placeholder="Search Articles Here..."
-					required
 				/>
 				<select
 					id="seDropdown"
@@ -77,9 +72,9 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 					<option value={""} hidden disabled>
 						Please select a SE method
 					</option>
-					<option value={"test1"}>Test 1</option>
-					<option value={"test2"}>Test 2</option>
-					<option value={"test3"}>Test 3</option>
+					<option value="agile">Agile</option>
+					<option value="sprint">Sprint</option>
+					<option value="mob_programming">Mob Programming</option>
 				</select>
 				<button
 					type="submit"

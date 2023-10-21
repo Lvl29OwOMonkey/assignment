@@ -14,8 +14,9 @@ export class ArticlesService {
     return createdArticle.save();
   }
 
-  async findAll(): Promise<Article[]> {
-    return this.articleModel.find().exec();
+  async findAll(approved: boolean): Promise<Article[]> {
+    if (approved) return this.articleModel.find({ status: "approved" }).exec();
+    return this.articleModel.find({status: "pending"}).exec();
   }
 
   async findOne(id: string): Promise<Article> {
@@ -27,8 +28,8 @@ export class ArticlesService {
   }
 
   // Function to find article by title
-  async findArticle(title: string, se: string) : Promise<Article[]> {
-    return await this.articleModel.find({title:{$regex:`^${title}`, $options:"i"}, se});
+  async findArticle(title: string, se: string, approved) : Promise<Article[]> {
+    return await this.articleModel.find({title:{$regex:`^${title}`, $options:"i"}, se, status: approved ? "approved" : "pending"});
   }
 
 }
