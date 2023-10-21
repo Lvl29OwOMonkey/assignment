@@ -5,6 +5,11 @@ export interface ArticlesInterface {
 	source: string;
 	pubYear: string;
 	doi: string;
+	volume: number;
+	pages: number;
+	se: string;
+	status: string;
+	submitDate: Date;
 	claim: string;
 	evidence: string;
 }

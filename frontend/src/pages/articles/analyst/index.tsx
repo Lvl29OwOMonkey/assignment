@@ -3,8 +3,9 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { ArticlesInterface } from "@/utils/schema";
 import { GridColDef } from "@mui/x-data-grid";
-import BetterDataTable from "@/components/BetterDataTable";
+import BetterDataTable from "../../../components/BetterDataTable";
 import Head from "next/head";
+import { useState } from "react";
 
 type ArticlesProps = {
 	articles: ArticlesInterface[];
@@ -16,7 +17,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 		{
 			field: "authors",
 			headerName: "Authors",
-			valueGetter: (params) => params.row.authors.join(", "),
+			valueGetter: (params: any) => params.row.authors.join(", "),
 		},
 		{ field: "source", headerName: "Source" },
 		{ field: "pubYear", headerName: "Publication Year" },
@@ -31,10 +32,12 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 		},
 	];
 
-	const router = useRouter();
+	//const router = useRouter();
+
+	const [selectedArticle, setSelectedArticle] = useState<ArticlesInterface|null>(null);
 
 	return (
-		<>
+		<div>
 			<Head>
 				<title>Analyst Page</title>
 			</Head>
@@ -42,10 +45,27 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 				<h1 className="text-3xl font-bold">Check new articles</h1>
 				<p>Check the following entrys and moderate as needed:</p>
 				<BetterDataTable columns={headers} rows={articles} clickAction={(params) => {
-					router.push(`/articles/analyst/${params.row.doi}`);
+					//router.push(`/articles/analyst/${params.row.doi}`);
+					const article = articles.find((article) => article.doi === params.row.doi);
+					setSelectedArticle(article || null);
 				}}/>
+				<div className="flex justify-center">
+					{selectedArticle && (
+						<div>
+							<h1 className="text-3xl font-bold">Selected article</h1>
+							<p>Title: {selectedArticle.title}</p>
+							<p>Authors: {selectedArticle.authors.join(", ")}</p>
+							<p>Source: {selectedArticle.source}</p>
+							<p>Publication Year: {selectedArticle.pubYear}</p>
+							<p>DOI: {selectedArticle.doi}</p>
+							<p>Volume: {selectedArticle.volume}</p>
+							<p>Pages: {selectedArticle.pages}</p>
+							<p>Submitted Date: {selectedArticle.submitDate.toISOString()}</p>
+						</div>
+					)}
+				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 
