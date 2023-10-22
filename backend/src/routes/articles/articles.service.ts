@@ -9,26 +9,53 @@ export class ArticlesService {
     private articleModel: Model<Article>,
   ) {}
 
-  async create(createArticleDto: any): Promise<Article> {
-    const createdArticle = new this.articleModel(createArticleDto);
+  /**
+   * Create an article
+   * @param newData Article data to create 
+   * @returns 
+   */
+  async create(newData: any): Promise<Article> {
+    const createdArticle = new this.articleModel(newData);
     return createdArticle.save();
   }
 
-  async findAll(): Promise<Article[]> {
-    return this.articleModel.find().exec();
+  /**
+   * Get all articles
+   * @param approved Approved articles or pending articles
+   * @returns List of articles
+   */
+  async findAll(approved: boolean): Promise<Article[]> {
+    if (approved) return this.articleModel.find({ status: "approved" }).exec();
+    return this.articleModel.find({status: "pending"}).exec();
   }
 
-  async findOne(id: string): Promise<Article> {
-    return this.articleModel.findOne({ _id: id });
+  /**
+   * Get an article by DOI
+   * @param doi Article DOI
+   * @returns Article
+   */
+  async findOne(doi: string): Promise<Article> {
+    return this.articleModel.findOne({ doi });
   }
 
-  async update(id: string, updateArticleDto: any) {
-    this.articleModel.updateOne({ _id: id }, updateArticleDto);
+  /**
+   * Update an article
+   * @param doi Article DOI
+   * @param newData Article data to update
+   */
+  async update(doi: string, newData: any) {
+    await this.articleModel.updateOne({ doi }, newData);
   }
 
-  // Function to find article by title
-  async findArticle(title: string, se: string) : Promise<Article[]> {
-    return await this.articleModel.find({title:{$regex:`^${title}`, $options:"i"}, se});
+  /**
+   * Find articles by title and SE Method
+   * @param title Title of the article
+   * @param se SE Method
+   * @param approved Approved articles or pending articles
+   * @returns List of articles
+   */
+  async findArticle(title: string, se: string, approved) : Promise<Article[]> {
+    return await this.articleModel.find({title:{$regex:`^${title}`, $options:"i"}, se, status: approved ? "approved" : "pending"});
   }
 
 }

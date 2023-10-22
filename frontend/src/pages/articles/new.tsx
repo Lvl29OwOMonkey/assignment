@@ -8,9 +8,9 @@ const NewDiscussion = () => {
 	const [authors, setAuthors] = useState<string[]>([]);
 	const [source, setSource] = useState("");
 	const [pubYear, setPubYear] = useState(new Date().getFullYear());
-	const [doi, setDoi] = useState("");
-	const [summary, setSummary] = useState("");
-	const [linkedDiscussion, setLinkedDiscussion] = useState<string>("");
+	const [doi, setDoi] = useState(0);
+	const [volume, setVolume] = useState(1);
+	const [pages, setPages] = useState(1);
 
 	const [submitted, setSubmitted] = useState(false);
 	const [error, setError] = useState("");
@@ -20,6 +20,7 @@ const NewDiscussion = () => {
 	async function submitNewArticle(
 		event: FormEvent<HTMLFormElement>
 	): Promise<any> {
+		// Remove any existing timeout and reset the message
 		if (hideTimeout) {
 			clearTimeout(hideTimeout);
 			setSubmitted(false);
@@ -29,45 +30,55 @@ const NewDiscussion = () => {
 		event.preventDefault();
 
 		try {
-			const result = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					title,
-					authors,
-					source,
-					pubYear,
-					doi,
-					summary,
-					linkedDiscussion,
-				}),
-			});
+			// Send the request
+			const result = await fetch(
+				`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						title,
+						authors,
+						source,
+						pubYear,
+						doi,
+						volume,
+						pages,
+					}),
+				}
+			);
+			// Check the result
 			if (result.status === 200) {
 				setSubmitted(true);
 			} else {
 				const data = await result.json();
 				if (data.error == "ValidationError") {
-					const message = data.message.map((item: any) => {
-						// Replace first character with uppercase
-						item.field = item.field.charAt(0).toUpperCase() + item.field.slice(1);
-						return `${item.field}: ${item.message}.`;
-					}).join("\n");
+					const message = data.message
+						.map((item: any) => {
+							// Replace first character with uppercase
+							item.field =
+								item.field.charAt(0).toUpperCase() + item.field.slice(1);
+							return `${item.field}: ${item.message}.`;
+						})
+						.join("\n");
 					setError(message);
 				} else {
 					setError(data.message);
 				}
 			}
-		} catch	(err) {
-			console.error("Error submitting new article:", err);
+		} catch (err) {
 			setError("Error submitting new article");
 		}
 
-		setHideTimeout(setTimeout(() => {
-			setSubmitted(false);
-			setError("");
-		}, 5000));
+		// Set a timeout to hide the message
+		setHideTimeout(
+			setTimeout(() => {
+				setSubmitted(false);
+				setError("");
+			}, 5000)
+		);
 	}
 
 	// Some helper methods for the authors array
@@ -90,7 +101,7 @@ const NewDiscussion = () => {
 			<Head>
 				<title>New Article</title>
 			</Head>
-			<h1>New Article</h1>
+			<h1 className="text-3xl font-bold">New Article</h1>
 			<form className={formStyles.form} onSubmit={submitNewArticle}>
 				<label htmlFor="title">Title:</label>
 				<input
@@ -135,7 +146,7 @@ const NewDiscussion = () => {
 				>
 					+
 				</button>
-				<label htmlFor="source">Source:</label>
+				<label htmlFor="source">Journal Name:</label>
 				<input
 					className={formStyles.formItem}
 					type="text"
@@ -154,7 +165,7 @@ const NewDiscussion = () => {
 					name="pubYear"
 					id="pubYear"
 					value={pubYear}
-					min={1900}
+					min={1500}
 					max={new Date().getFullYear()}
 					onChange={(event) => {
 						const val = event.target.value;
@@ -166,40 +177,41 @@ const NewDiscussion = () => {
 					}}
 					required
 				/>
+				<label htmlFor="volume">Volume:</label>
+				<input
+					className={formStyles.formItem}
+					type="number"
+					name="volume"
+					value={volume}
+					min={1}
+					onChange={(event) => setVolume(parseInt(event.target.value))}
+					required
+				/>
+				<label htmlFor="pages">Pages:</label>
+				<input
+					className={formStyles.formItem}
+					type="number"
+					name="pages"
+					id="pages"
+					min={1}
+					value={pages}
+					onChange={(event) => setPages(parseInt(event.target.value))}
+					required
+				/>
 				<label htmlFor="doi">DOI:</label>
 				<input
 					className={formStyles.formItem}
-					type="text"
+					type="number"
 					name="doi"
 					id="doi"
 					value={doi}
+					min={1}
 					onChange={(event) => {
-						setDoi(event.target.value);
+						setDoi(parseInt(event.target.value));
 					}}
 					required
 				/>
-				<label htmlFor="summary">Summary:</label>
-				<textarea
-					className={formStyles.formTextArea}
-					name="summary"
-					value={summary}
-					onChange={(event) => setSummary(event.target.value)}
-					required
-				/>
-				<label htmlFor="linkedDiscussion">Linked Discussion:</label>
-				<select
-					className={formStyles.formItem}
-					name="linkedDiscussion"
-					id="linkedDiscussion"
-					value={linkedDiscussion}
-					onChange={(event) => setLinkedDiscussion(event.target.value)}
-				>
-					<option value="" hidden disabled>Select SE practice...</option>
-					<option value="1">Discussion 1</option>
-					<option value="2">Discussion 2</option>
-					<option value="3">Discussion 3</option>
-				</select>
-				<button className={formStyles.formItem} type="submit">
+				<button className={formStyles.submitButton} type="submit">
 					Submit
 				</button>
 				{submitted && <p>Article submitted successfully!</p>}
