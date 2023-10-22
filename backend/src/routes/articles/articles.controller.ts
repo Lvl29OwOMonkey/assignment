@@ -18,6 +18,7 @@ import { Article } from "../../interfaces/articles.interface";
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
+  // Find approved articles
   @Header("Content-Type", "application/json")
   @Get()
   async findArticles(
@@ -30,18 +31,14 @@ export class ArticlesController {
     return this.articlesService.findArticle(title, se, true);
   }
 
+  // Find pending articles
   @Header("Content-Type", "application/json")
   @Get("analyst")
-  async findAnalysis(
-    @Query("title") title: string,
-    @Query("se") se: string,
-  ): Promise<Article[]> {
-    if (!title && !se) {
-      return this.articlesService.findAll(false);
-    }
-    return this.articlesService.findArticle(title, se, false);
+  async findAnalysis(): Promise<Article[]> {
+    return this.articlesService.findAll(false);
   }
 
+  // Update an article
   @Post("analyst/:doi")
   async updateAnalysisArticle(
     @Param("doi") doi: string,
@@ -62,6 +59,7 @@ export class ArticlesController {
     }
   }
 
+  // Decline an article
   @Post("analyst/:doi/decline")
   async declineAnalysisArticle(
     @Param("doi") doi: string,
@@ -81,12 +79,7 @@ export class ArticlesController {
     }
   }
 
-  // Endpoint for searching articles by title
-  /* @Get(":id")
-  getProduct(@Param("id") title: string) {
-    return this.articlesService.findArticle(title);
-  }*/
-
+  // Create an article
   @Header("Content-Type", "application/json")
   @Post()
   async create(
@@ -98,8 +91,11 @@ export class ArticlesController {
     } catch (error) {
       res.status(HttpStatus.BAD_REQUEST);
       if (error.code === 11000) {
-        const existingArticle = await this.articlesService.findOne(articleData.doi);
+        const existingArticle = await this.articlesService.findOne(
+          articleData.doi,
+        );
 
+        // Check what status the article is in
         if (existingArticle.status === "approved") {
           return JSON.stringify({
             error: "AlreadyApproved",
@@ -117,11 +113,14 @@ export class ArticlesController {
           });
         }
 
+        // Unknown status so throw already exists
         return JSON.stringify({
           error: "DuplicateKey",
           message: `The DOI ${articleData.doi} already exists`,
         });
-      } else if (error.name === "ValidationError") {
+      }
+      // Check if the error is a validation error
+      else if (error.name === "ValidationError") {
         const errors = Object.keys(error.errors).map((key) => {
           return {
             field: key,
@@ -132,7 +131,9 @@ export class ArticlesController {
           error: "ValidationError",
           message: errors,
         });
-      } else {
+      }
+      // Unknown error
+      else {
         return JSON.stringify({
           error: "Unknown error",
           message: error.message,

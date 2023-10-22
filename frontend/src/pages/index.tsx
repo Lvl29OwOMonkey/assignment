@@ -77,14 +77,15 @@ const Articles: NextPage<ArticlesProps> = ({ articlesData }) => {
 					
 					const seValue = seDropdown.value.toLowerCase().replace(" ", "_");
 
+					// Fetch articles from Backend
 					const request = await axios.get(
 						`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles?title=${searchInput.value}&se=${seValue}`,
 						{
 							validateStatus: () => true,
 						}
 					);
-					const articles = request.data;
-					setArticles(articles);
+					// Set articles to the response
+					setArticles(request.data);
 				}}
 			>
 				<input

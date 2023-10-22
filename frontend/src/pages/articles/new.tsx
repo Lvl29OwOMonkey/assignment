@@ -20,6 +20,7 @@ const NewDiscussion = () => {
 	async function submitNewArticle(
 		event: FormEvent<HTMLFormElement>
 	): Promise<any> {
+		// Remove any existing timeout and reset the message
 		if (hideTimeout) {
 			clearTimeout(hideTimeout);
 			setSubmitted(false);
@@ -29,6 +30,7 @@ const NewDiscussion = () => {
 		event.preventDefault();
 
 		try {
+			// Send the request
 			const result = await fetch(
 				`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`,
 				{
@@ -47,6 +49,7 @@ const NewDiscussion = () => {
 					}),
 				}
 			);
+			// Check the result
 			if (result.status === 200) {
 				setSubmitted(true);
 			} else {
@@ -69,6 +72,7 @@ const NewDiscussion = () => {
 			setError("Error submitting new article");
 		}
 
+		// Set a timeout to hide the message
 		setHideTimeout(
 			setTimeout(() => {
 				setSubmitted(false);
