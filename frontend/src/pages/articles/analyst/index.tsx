@@ -107,7 +107,8 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 												volume: formData.get("volume"),
 												pages: formData.get("pages"),
 											};
-
+											
+											// Send the request
 											const response = await axios.post(
 												`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/analyst/${selectedArticle.doi}`,
 												data,
@@ -116,6 +117,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 												}
 											);
 
+											// If the request was successful, refresh the page
 											if (response.status === 204) {
 												setSelectedArticle(null);
 												await refresh();
@@ -268,6 +270,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 											e.preventDefault();
 											setAddError(null);
 
+											// Get the data from the form
 											const formData = new FormData(
 												e.target as HTMLFormElement
 											);
@@ -275,13 +278,16 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 												formData.entries()
 											);
 
+											// Convert SE practice to lowercase and replace spaces with underscores
 											data["se"] = data["se"]
 												.toString()
 												.toLowerCase()
 												.replace(" ", "_");
 
+											// Add the status
 											data["status"] = "approved";
 
+											// Send the request
 											const response = await axios.post(
 												`${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/analyst/${selectedArticle.doi}`,
 												data,
@@ -290,6 +296,7 @@ const Articles: NextPage<ArticlesProps> = ({ articles }) => {
 												}
 											);
 
+											// If the request was successful, refresh the page
 											if (response.status === 204) {
 												setSelectedArticle(null);
 												await refresh();
